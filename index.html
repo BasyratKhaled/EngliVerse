@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EngliVerse - Learn & Play</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bubbles" id="bubbleContainer"></div>
+
+    <nav>
+        <div class="logo">✨ EngliVerse</div>
+        <div class="nav-links">
+            <a href="lessons.html">Lessons</a>
+            <a href="#game">Flashcards</a>
+            <a href="#puzzle">Word Puzzle</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Master English Through Play!</h1>
+        <p>Fun, animated lessons, dynamic flashcards, and interactive puzzles designed for beginners.</p>
+        <div class="header-buttons">
+            <a href="lessons.html" class="btn">Beginner Lessons 🚀</a>
+            <a href="#game" class="btn btn-secondary">Play Games 🎮</a>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section id="lessons">
+            <h2>Beginner Lessons</h2>
+            <div class="grid-3">
+                <div class="card" onclick="openLesson('Greetings', 'Hello! Good Morning! Welcome!<br><br>Use \'Hello\' or \'Hi\' anytime. Use \'Good morning\' before 12 PM, and \'Good evening\' at night!')">
+                    <span class="icon">👋</span>
+                    <h3>Essential Greetings</h3>
+                    <p>Learn how to say hello, goodbye, and introduce yourself to new friends.</p>
+                </div>
+                <div class="card" onclick="openLesson('Numbers & Time', 'One, Two, Three, Four, Five...<br><br>To ask for time, say: <b>\'What time is it?\'</b><br>Answer: \'It is 3 o\'clock.\'')">
+                    <span class="icon">🔢</span>
+                    <h3>Numbers & Telling Time</h3>
+                    <p>Master numbers 1-100 and learn how to ask for and read the clock layout easily.</p>
+                </div>
+                <div class="card" onclick="openLesson('Action Verbs', 'Run 🏃‍♂️, Jump 🦘, Eat 🍕, Sleep 😴<br><br>Verbs are action words! Examples:<br>I <b>run</b> everyday.<br>She <b>eats</b> an apple.')">
+                    <span class="icon">🏃‍♂️</span>
+                    <h3>Basic Action Verbs</h3>
+                    <p>Discover everyday action verbs to start forming your very first complete sentences.</p>
+                </div>
+            </div>
+
+            <div class="lesson-actions">
+                <button class="btn btn-secondary" id="learnMoreBtn" onclick="toggleLearnMore()">Expand Study Guide 👇</button>
+            </div>
+
+            <div class="learn-more-panel" id="learnMorePanel">
+                <h3>💡 Pro Starter Guide</h3>
+                <p style="color: var(--secondary); margin-bottom: 1.5rem;">Quick tips to build confidence daily:</p>
+                <div class="learn-more-grid">
+                    <div class="tip-box">
+                        <h4>Speak Out Loud</h4>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Don't just read. Speak words out loud to program muscle memory into your speech.</p>
+                    </div>
+                    <div class="tip-box">
+                        <h4>Label Your Room</h4>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Put sticky notes on your door, mirror, and desk with their English translation equivalents.</p>
+                    </div>
+                    <div class="tip-box">
+                        <h4>Embrace Mistakes</h4>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Making mistakes means you're trying. Every puzzle error is simply data helping you improve.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="game">
+            <h2>Vocabulary Flashcards</h2>
+            <div class="game-area">
+                <div class="flashcard-inner" id="flashcard" onclick="flipCard()">
+                    <span id="cardText">Apple</span>
+                </div>
+                <div class="game-controls">
+                    <button class="btn" onclick="prevCard()">⬅️ Back</button>
+                    <button class="btn" onclick="nextCard()">Next ➡️</button>
+                </div>
+                <div class="score-tracker">Tip: Click the card to flip and view the definition!</div>
+            </div>
+        </section>
+
+        <section id="puzzle">
+            <h2>Word Scramble Puzzle</h2>
+            <div class="puzzle-box">
+                <div class="scrambled-word" id="scrambledWord">👉 OSHUCE 👈</div>
+                <input type="text" id="puzzleInput" placeholder="Type the correct word here...">
+                <br>
+                <button class="btn" onclick="checkPuzzle()">Check Answer</button>
+                <div class="score-tracker" style="margin-top: 1.5rem;">Score: <span id="score">0</span></div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>✨ EngliVerse</h3>
+                <p>Making English learning joyful, immersive, and accessible everywhere.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#lessons">Lessons</a>
+                <a href="#game">Games</a>
+                <a href="#puzzle">Puzzles</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 EngliVerse Learning Platform. Crafted for beginners.
+        </div>
+    </footer>
+
+    <div class="modal" id="lessonModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLesson()">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 1.5rem;">Lesson Title</h2>
+            <p id="modalBody" style="font-size: 1.2rem; line-height: 1.6;"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
