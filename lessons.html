@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EngliVerse - Detailed Beginner Lessons</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --bg: #0f0c1b;
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, var(--bg) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Background Bubbles */
+        .bubbles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .bubble {
+            position: absolute;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1) rotate(360deg); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(15, 12, 27, 0.7);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--secondary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: var(--secondary);
+            color: var(--bg);
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            padding: 5rem 2rem 3rem 2rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Lessons Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Accordion (Expandable Lessons) Styling */
+        .lesson-accordion {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .lesson-accordion.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .lesson-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(0,0,0,0.2);
+            transition: background 0.3s;
+        }
+
+        .lesson-header:hover {
+            background: rgba(108, 92, 231, 0.2);
+        }
+
+        .lesson-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .lesson-icon {
+            font-size: 2rem;
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            transition: transform 0.4s ease;
+        }
+
+        .lesson-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease;
+            background: rgba(255, 255, 255, 0.02);
+            line-height: 1.7;
+        }
+
+        /* When the accordion is active */
+        .lesson-accordion.active .lesson-content {
+            max-height: 1500px; /* Large enough to fit content */
+            padding: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .lesson-accordion.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Inner Content Styling */
+        .lesson-content h3 {
+            color: var(--secondary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .lesson-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .lesson-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+            color: #dcdde1;
+        }
+
+        .lesson-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .vocab-box {
+            background: rgba(108, 92, 231, 0.15);
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            border-radius: 0 10px 10px 0;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .example-text {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(15, 12, 27, 0.9);
+            color: rgba(255,255,255,0.5);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bubbles" id="bubbleContainer"></div>
+
+    <nav>
+        <div class="logo">✨ EngliVerse</div>
+        <div class="nav-links">
+            <a href="index.html" class="btn-back">⬅️ Back to Home</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>In-Depth Beginner Lessons</h1>
+        <p>Expand your knowledge. Click on any topic below to reveal detailed explanations, vocabulary lists, and real-world examples.</p>
+    </header>
+
+    <div class="container" id="lessonsContainer">
+        
+        <div class="lesson-accordion">
+            <div class="lesson-header" onclick="toggleAccordion(this)">
+                <div class="lesson-title">
+                    <span class="lesson-icon">🔤</span>
+                    Lesson 1: The English Alphabet & Phonics
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="lesson-content">
+                <h3>The 26 Letters</h3>
+                <p>The English alphabet has 26 letters. They can be written in <strong>Uppercase</strong> (Capital) or <strong>Lowercase</strong> (Small).</p>
+                <div class="vocab-box">
+                    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>
+                    a b c d e f g h i j k l m n o p q r s t u v w x y z
+                </div>
+                <h3>Vowels vs. Consonants</h3>
+                <ul>
+                    <li><strong>Vowels:</strong> A, E, I, O, U (These are the most important sounds in English!).</li>
+                    <li><strong>Consonants:</strong> All the other letters (B, C, D, F, G, etc.).</li>
+                </ul>
+                <h3>Practice Reading</h3>
+                <p>Try sounding out these simple 3-letter words (Consonant-Vowel-Consonant):</p>
+                <ul>
+                    <li>C - A - T (Cat) 🐱</li>
+                    <li>D - O - G (Dog) 🐶</li>
+                    <li>S - U - N (Sun) ☀️</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-accordion">
+            <div class="lesson-header" onclick="toggleAccordion(this)">
+                <div class="lesson-title">
+                    <span class="lesson-icon">🤝</span>
+                    Lesson 2: Detailed Greetings & Farewells
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="lesson-content">
+                <h3>Formal Greetings (Polite/Professional)</h3>
+                <p>Use these when speaking to teachers, bosses, or people you don't know well.</p>
+                <ul>
+                    <li><strong>Good morning:</strong> Used from sunrise until 12:00 PM (Noon).</li>
+                    <li><strong>Good afternoon:</strong> Used from 12:00 PM to roughly 5:00 PM.</li>
+                    <li><strong>Good evening:</strong> Used from 5:00 PM until you go to sleep.</li>
+                </ul>
+                <h3>Informal Greetings (Friends/Family)</h3>
+                <ul>
+                    <li><span class="example-text">"Hi!"</span> or <span class="example-text">"Hello!"</span></li>
+                    <li><span class="example-text">"Hey there!"</span></li>
+                    <li><span class="example-text">"What's up?"</span> (A casual way to ask "How are you?")</li>
+                </ul>
+                <h3>Saying Goodbye</h3>
+                <div class="vocab-box">
+                    Goodbye / Bye / See you later / Have a good day / Goodnight
+                </div>
+                <p><em>Note: "Goodnight" is ONLY used when you are leaving to go to sleep, not as a greeting when you arrive somewhere at night.</em></p>
+            </div>
+        </div>
+
+        <div class="lesson-accordion">
+            <div class="lesson-header" onclick="toggleAccordion(this)">
+                <div class="lesson-title">
+                    <span class="lesson-icon">👤</span>
+                    Lesson 3: Pronouns & The Verb "To Be"
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="lesson-content">
+                <h3>What is a Pronoun?</h3>
+                <p>A pronoun replaces a person's name so we don't have to repeat it. (e.g., instead of saying "John is tall, John is smart", we say "John is tall, <strong>he</strong> is smart.")</p>
+                
+                <h3>The Most Important Verb: "To Be"</h3>
+                <p>This verb is used to describe age, feelings, nationality, and jobs.</p>
+                <div class="vocab-box">
+                    <strong>I am</strong> (I am happy) 😊<br>
+                    <strong>You are</strong> (You are a student) 📚<br>
+                    <strong>He is</strong> (He is my brother) 👨<br>
+                    <strong>She is</strong> (She is a doctor) 👩‍⚕️<br>
+                    <strong>It is</strong> (It is a dog) 🐕<br>
+                    <strong>We are</strong> (We are friends) 🧑‍🤝‍🧑<br>
+                    <strong>They are</strong> (They are playing) ⚽
+                </div>
+                <h3>Contractions (Short Forms)</h3>
+                <p>In spoken English, we often combine these words:</p>
+                <ul>
+                    <li>I am ➔ <strong>I'm</strong></li>
+                    <li>She is ➔ <strong>She's</strong></li>
+                    <li>They are ➔ <strong>They're</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-accordion">
+            <div class="lesson-header" onclick="toggleAccordion(this)">
+                <div class="lesson-title">
+                    <span class="lesson-icon">📅</span>
+                    Lesson 4: Days, Months & Seasons
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="lesson-content">
+                <h3>Days of the Week</h3>
+                <p>There are 7 days in a week. Note that days of the week are ALWAYS capitalized in English.</p>
+                <ul>
+                    <li><strong>Weekdays:</strong> Monday, Tuesday, Wednesday, Thursday, Friday</li>
+                    <li><strong>Weekend:</strong> Saturday, Sunday</li>
+                </ul>
+                <div class="vocab-box">
+                    Question: <span class="example-text">"What day is it today?"</span><br>
+                    Answer: <span class="example-text">"Today is Monday."</span>
+                </div>
+
+                <h3>Months of the Year</h3>
+                <p>January, February, March, April, May, June, July, August, September, October, November, December.</p>
+
+                <h3>The Four Seasons</h3>
+                <ul>
+                    <li>🌸 <strong>Spring:</strong> Flowers bloom.</li>
+                    <li>☀️ <strong>Summer:</strong> Hot weather.</li>
+                    <li>🍂 <strong>Autumn (or Fall):</strong> Leaves change color.</li>
+                    <li>❄️ <strong>Winter:</strong> Cold weather, sometimes snow.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-accordion">
+            <div class="lesson-header" onclick="toggleAccordion(this)">
+                <div class="lesson-title">
+                    <span class="lesson-icon">🎨</span>
+                    Lesson 5: Colors and Shapes
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="lesson-content">
+                <h3>Primary Colors</h3>
+                <ul>
+                    <li>🔴 <strong>Red:</strong> Like an apple or a stop sign.</li>
+                    <li>🔵 <strong>Blue:</strong> Like the sky or the ocean.</li>
+                    <li>🟡 <strong>Yellow:</strong> Like the sun or a banana.</li>
+                </ul>
+                <h3>Secondary Colors</h3>
+                <ul>
+                    <li>🟢 <strong>Green:</strong> Blue + Yellow (Like grass).</li>
+                    <li>🟠 <strong>Orange:</strong> Red + Yellow (Like the fruit).</li>
+                    <li>🟣 <strong>Purple:</strong> Red + Blue (Like grapes).</li>
+                    <li>⚫ <strong>Black</strong> & ⚪ <strong>White</strong></li>
+                </ul>
+                <h3>Basic Shapes</h3>
+                <div class="vocab-box">
+                    ⭕ Circle (Round, no corners)<br>
+                    ⬛ Square (4 equal sides)<br>
+                    🔺 Triangle (3 sides)<br>
+                    ▭ Rectangle (2 long sides, 2 short sides)
+                </div>
+                <p><strong>Practice Sentence:</strong> <span class="example-text">"The sun is a yellow circle."</span></p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 EngliVerse. Dedicated to expanding minds worldwide.</p>
+    </footer>
+
+    <script>
+        /* --- Background Animation setup --- */
+        const container = document.getElementById('bubbleContainer');
+        for (let i = 0; i < 25; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            bubble.style.width = bubble.style.height = `${Math.random() * 60 + 20}px`;
+            bubble.style.left = `${Math.random() * 100}vw`;
+            bubble.style.animationDelay = `${Math.random() * 15}s`;
+            bubble.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            container.appendChild(bubble);
+        }
+
+        /* --- Accordion Toggle Logic --- */
+        function toggleAccordion(element) {
+            const currentAccordion = element.parentElement;
+            const allAccordions = document.querySelectorAll('.lesson-accordion');
+
+            // Close all other accordions to keep the screen clean (Optional)
+            allAccordions.forEach(acc => {
+                if(acc !== currentAccordion) {
+                    acc.classList.remove('active');
+                }
+            });
+
+            // Toggle the clicked one
+            currentAccordion.classList.toggle('active');
+        }
+
+        /* --- Scroll Reveal Animation --- */
+        const accordions = document.querySelectorAll('.lesson-accordion');
+        const revealItems = () => {
+            accordions.forEach((acc, index) => {
+                const top = acc.getBoundingClientRect().top;
+                if (top < window.innerHeight - 50) {
+                    // Stagger the animation timing slightly based on index
+                    setTimeout(() => {
+                        acc.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', revealItems);
+        window.addEventListener('load', revealItems);
+    </script>
+</body>
+</html>
